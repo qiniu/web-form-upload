@@ -15,7 +15,10 @@ A small example use go-sdk building a upload webpage
 在运行本样例之前请确保已安装go语言的编译器。下面操作都是在Mac OS X下运行。
 
 #下载Go－SDK
-下载七牛Go-SKD
+下载七牛Go-SKD：
+在命令行下运行：
+
+    go get github.com/qiniu/api
 
 #创建一个go语言文件
 
@@ -177,4 +180,17 @@ A small example use go-sdk building a upload webpage
 	
 	// --------------------------------------------------------------------------------
 
+
+
+
+
+#运行程序
+
+运行下面命令：
+
+    export GOPATH=/"THE PATH TO GO-SDK"
+    go run main.go
+    
+    
+然后访问：httlp://localhost:8765/upload3 即可看到建好的页面
 
