@@ -41,6 +41,7 @@ A small example use go-sdk building a upload webpage
 	const (
 		BUCKET = "APPLY YOUR BUCKET NAME HERE"  // change to own space name
 		DOMAIN = "APPLY YOUR DOMAIN HERE" // For example: myspace.qiniudn.com
+		returnUrl= "http://localhost:8765/uploaded"
 	)
 	
 	// --------------------------------------------------------------------------------
@@ -138,16 +139,19 @@ A small example use go-sdk building a upload webpage
 	
 	func handleUpload(w http.ResponseWriter, req *http.Request) {
 	
-		policy := rs.PutPolicy{Scope: BUCKET, ReturnUrl: "http://localhost:8765/uploaded"}
+	        //get a instance that generate upload token. We assign bucket name and redirect URL as parameter
+		policy := rs.PutPolicy{Scope: BUCKET, ReturnUrl: returnUrl}
 		token := policy.Token()
 		log.Println("token:", token)
+		
+		//pass the upload token to HTML code
 		uploadForm := fmt.Sprintf(uploadFormFmt, token)
 		w.Write([]byte(uploadForm))
 	}
 	
 	func handleUploadWithKey(w http.ResponseWriter, req *http.Request) {
 	
-		policy := rs.PutPolicy{Scope: BUCKET, ReturnUrl: "http://localhost:8765/uploaded"}
+		policy := rs.PutPolicy{Scope: BUCKET, ReturnUrl: returnUrl}
 		token := policy.Token()
 		log.Println("token:", token)
 		uploadForm := fmt.Sprintf(uploadWithKeyFormFmt, token)
@@ -156,7 +160,7 @@ A small example use go-sdk building a upload webpage
 	
 	func handleUploadWithKeyAndCustomField(w http.ResponseWriter, req *http.Request) {
 	
-		policy := rs.PutPolicy{Scope: BUCKET, ReturnUrl: "http://localhost:8765/uploaded"}
+		policy := rs.PutPolicy{Scope: BUCKET, ReturnUrl: returnUrl}
 		token := policy.Token()
 		log.Println("token:", token)
 		uploadForm := fmt.Sprintf(uploadWithkeyAndCustomFieldFmt, token)
@@ -192,5 +196,5 @@ A small example use go-sdk building a upload webpage
     go run main.go
     
     
-然后访问：httlp://localhost:8765/upload3 即可看到建好的页面
+然后访问：httlp://localhost:8765/upload3 即可看到创建好的页面
 
