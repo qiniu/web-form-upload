@@ -1,0 +1,14 @@
+<h1>Download#index</h1>
+<html>
+ <body>
+ <form action="/download/" method="get">
+ 	<% src=@imageURL %>
+      Bucket name: <input type="text" name="bucketname" value=""><br> 
+      Filekey download from cloud storage: <input type="text" name="fileKey" value=""><br>
+      <input type="submit" value="Download">
+  <p>ImageDownloadUrl: <%="#{src}"%>
+  <p><a href="/Users">Back to uploadWithKey</a>
+  <p><img src=<%="#{src}"%>>
+ </body>
+</html>
+<p>Find me in app/views/download/index.html.erb</p>

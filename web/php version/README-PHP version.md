@@ -37,10 +37,6 @@ This instance shows how to build a small web-upload.
       sudo apachectl restart
       
 ##使用七牛PHP-SDK
-本例展示一个网页上传和下载。
-本例中的项目位于Apache的默认路径："/Library/WebServer/Documents"下，当然也可以修改Apache的默认路径。
-
-在此目录下创建一个新文件：upload.php
 
 下载[七牛PHP-SDK](https://github.com/qiniu/php5.3-sdk)
 将其中的qbox文件夹置于与upload.php同一层目录
@@ -49,6 +45,102 @@ This instance shows how to build a small web-upload.
       
     const ACCESS_KEY = '<Apply your Access Key>';
     const SECRET_KEY = '<Apply your Secret Key>';
+    
+[到开发者平台查看Access Key & Secrect Key](https://dev.qiniutek.com/account/keys)
+    
+#####注意：以下所有样例均默认已经下载并修改好SDK
+
+###新建空间(i.e bucket)-样例
+
+本例展示如何新建一个空间(既bucket)。
+
+
+本例中的项目位于Apache的默认路径："/Library/WebServer/Documents"下，当然也可以修改Apache的默认路径。
+
+让用户输入希望新建的空间(bucket/space)名，即可创建一个新的空间并返回成功或失败信息。
+
+
+创建名为 "makebucket.php"的文件,内容如下：
+	
+  
+      <html>
+	   <body>
+	     <form action="#">
+	  	  Type in your new bucket name: <input type="text" name="bucket" value="">
+	      <input type="submit" value="Make New Bucket"><br>
+	
+	      =====================================================================================<br>
+	
+	<!--The embeded php code will generate a bucket(i.e. space) in Qiniu Cloud Storage -->
+	<!-- ************************************************************************************-->  
+	<?php 
+	
+	require('qbox/rs.php');
+	require('qbox/client/rs.php');
+	//首先初始化一个OAuth Client对象
+	$client = QBox\OAuth2\NewClient();
+	//然后实例化一个 QBox\RS\NewService() 对象
+	$bucket =$_GET['bucket'];
+	$rs = QBox\RS\NewService($client, $bucket);
+	//建立Bucket(i.e Space)
+	list($code, $error) = $rs->Mkbucket($bucket); 
+	$t=time();
+	echo (date("D F d Y",$t)) . " ===> Mkbucket result:";
+	if ($code == 200) {
+	    echo "Mkbucket Success!<br/>";
+	} else {
+	    $msg = QBox\ErrorMessage($code, $error);
+	    echo "Buckets failed: $code - $msg<br/>";  
+	} 
+	
+	?>
+	<!-- ************************************************************************************-->   
+	
+	 </body>
+	</html>
+	
+	
+###显示所有空间名
+
+本例展示如何获取已经建立好的所有空间的名字。
+
+新建一个php文件，“ShowBuckets.php”,内容如下：
+
+	<?php 
+	
+	require('qbox/rs.php');
+	require('qbox/client/rs.php');
+	
+	$client = QBox\OAuth2\NewClient();
+	$rs = QBox\RS\NewService($client, $bucket);
+	
+	list($result, $code, $error) = $rs->Buckets();
+	echo (date("D F d Y",$t)) . " ===> Bucukets result:";
+	if ($code == 200) {
+	    var_dump($result);
+	} else {
+	    $msg = QBox\ErrorMessage($code, $error);
+	    echo "Buckets failed: $code - $msg<br/>";  
+	}
+	
+	?>
+	
+然后在同一目录下新建一个HTML文件名为"buckets.html"：写入以下内容：
+
+    <html>
+     <body>
+       <form action="ShowBuckets.php", method="post">
+       <input type="submit" value="Show Buckets"><br>
+
+     </body>
+    </html>
+    
+启动Apache后，访问localhost/buckets 然后点击按钮"Show Buckets"获得所有已有的空间的名字
+	
+
+###上传文件－样例
+在此目录下创建一个新文件：upload.php
+
 
 然后修改upload.php文件内容如下：
 
@@ -79,7 +171,7 @@ This instance shows how to build a small web-upload.
 这样开启Apache后，访问 http://localhost/upload 便可上传文件了。
 
 同样的可以新建一个用于download图片的页面。需要制定文件所在的bucket,文件名以及希望保存成的文件名。
-
+###下载文件－样例
 新建名为download.php的文件内容如下：
 
 
