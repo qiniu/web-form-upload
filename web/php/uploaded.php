@@ -10,7 +10,9 @@
     $errMsg = urldecode($_GET["error"]);    
     
     if ($retStr)
-        $decodedRet = base64_decode($retStr);
+        $find = array('-', '_');
+        $replace = array('+', '/');
+        $decodedRet = base64_decode(str_replace($find, $replace, $retStr));
         $retObj = json_decode($decodedRet);
     
         $picKey = $retObj->{"key"};    
