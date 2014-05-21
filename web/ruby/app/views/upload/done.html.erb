@@ -1,0 +1,9 @@
+<html>
+    <body>
+        <p><%= @data %></p>
+        <p>Image Download Url: <%= @url %></p>
+        <p><a href="/upload/without_key">Back to without_key</a></p>
+        <p><a href="/upload/with_key">Back to with_key</a></p>
+        <p><img src=<%= @url %> alt="Is not Image?" /></p>
+    </body>
+</html>

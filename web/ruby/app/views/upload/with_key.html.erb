@@ -1,0 +1,10 @@
+<h1>Upload#without_key</h1>
+
+<form action="http://up.qiniu.com" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="token" value=<%= @token %> />
+    Album belonged to: <input name="x:album" value="albumId" /><br />
+    Image key in qiniu cloud storage: <input type="text" name="key" value="foo bar.jpg" /><br />
+    Image to upload: <input type="file" name="file" /><br />
+    <input type="submit" value="Upload" /><br />
+</form>
+
